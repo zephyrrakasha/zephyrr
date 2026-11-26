@@ -1,405 +1,1247 @@
+```html
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zephyr Store — Sewa Bot Store WhatsApp</title>
-  <link id="dynamic-favicon" rel="icon" type="image/png" href="https://ibb.co.com/gF7KP2FY" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
           colors: {
             brand: {
-              50: '#f0f7ff',
-              100: '#e0effe',
-              200: '#b9ddfe',
-              500: '#0284c7',
-              600: '#0369a1',
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              600: '#2563eb',
               700: '#1d4ed8',
-              800: '#1e3a8a',
-              900: '#172554',
-            }
-          }
-        }
-      }
+              800: '#1e40af',
+              900: '#1e3a8a',
+              950: '#172554',
+            },
+          },
+        },
+      },
     };
   </script>
   <style>
-    body {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* Seragamkan bingkai lingkaran logo ZS Zephyr Store di semua posisi */
+    .zs-circle-logo {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      overflow: hidden;
+      background-color: #ffffff;
+      border: 2px solid #bfdbfe;
+      box-shadow: 0 2px 8px rgba(29, 78, 216, 0.14);
+      flex-shrink: 0;
+    }
+
+    .zs-circle-logo img {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .zs-circle-logo.has-image img {
+      display: block;
+    }
+
+    .zs-circle-logo .zs-svg-fallback {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .zs-circle-logo.has-image .zs-svg-fallback {
+      display: none;
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-panel-anim {
+      animation: modalSlideUp 0.2s ease-out forwards;
     }
   </style>
 </head>
-<body class="bg-brand-50/50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white">
+<body class="bg-[#f4f8ff] text-slate-900 font-sans antialiased selection:bg-brand-600 selection:text-white">
+  <!-- Notifikasi status singkat (tanpa alert bawaan browser) -->
+  <div
+    id="statusToast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 rounded-full bg-brand-950 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 shadow-xl border border-blue-400/30 transition-all duration-200 translate-y-20 opacity-0 pointer-events-none"
+  ></div>
 
-  <!-- Fallback SVG Logo ZS (Biru & Putih) -->
-  <svg id="zs-fallback-svg" class="hidden" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="60" cy="60" r="56" fill="#ffffff" stroke="#0369a1" stroke-width="5"/>
-    <path d="M34 36 H68 L36 74 H68" fill="none" stroke="#0284c7" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M84 42 C84 35 66 35 66 45 C66 55 86 53 86 66 C86 77 65 78 62 71" fill="none" stroke="#1e3a8a" stroke-width="7" stroke-linecap="round"/>
-  </svg>
-
-  <!-- Navbar -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-brand-100 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <a href="#top" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-brand-600 bg-white flex items-center justify-center shrink-0 shadow-xs">
-          <img
-            data-brand-logo
-            src="https://ibb.co.com/gF7KP2FY"
-            alt="Logo Zephyr Store ZS"
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div>
-          <span class="block font-extrabold text-base sm:text-lg tracking-tight text-brand-900 group-hover:text-brand-700 transition">
+  <!-- 1. Top Header -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-blue-100">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+      <a href="#top" class="flex items-center gap-3 min-w-0 group">
+        <span data-zs-logo class="w-11 h-11"></span>
+        <div class="min-w-0">
+          <div class="text-sm sm:text-base font-extrabold text-brand-950 truncate group-hover:text-brand-700 transition">
             Zephyr Store
-          </span>
-          <span class="block text-[11px] font-medium text-brand-600 -mt-0.5">
+          </div>
+          <div class="text-[11px] sm:text-xs font-medium text-brand-700 truncate">
             Sewa Bot Store WhatsApp
-          </span>
+          </div>
         </div>
       </a>
 
-      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
-        <a href="#pricelist" class="hover:text-brand-700 transition">Pricelist</a>
-        <a href="#fitur" class="hover:text-brand-700 transition">Fitur Bot</a>
-        <a href="#garansi" class="hover:text-brand-700 transition">Garansi</a>
-        <a href="#checkout" class="hover:text-brand-700 transition">Pembayaran</a>
-        <a href="#format-sewa" class="hover:text-brand-700 transition">Format Sewa</a>
-      </nav>
-
+      <!-- Mengarah langsung ke #format-sewa-bot pada halaman utama -->
       <a
-        href="#checkout"
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs sm:text-sm font-bold shadow-sm transition"
+        href="#format-sewa-bot"
+        class="shrink-0 rounded-xl bg-brand-700 hover:bg-brand-800 active:scale-[0.99] text-white text-xs sm:text-sm font-bold px-3.5 sm:px-4 py-2.5 shadow-sm transition"
       >
         Sewa Sekarang
       </a>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section id="top" class="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600 text-white py-14 sm:py-20">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-      <div class="grid lg:grid-cols-12 gap-8 items-center">
-        <div class="lg:col-span-8 space-y-5">
-          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white text-brand-900 text-xs font-bold shadow">
-            <img
-              data-brand-logo
-              src="https://ibb.co.com/gF7KP2FY"
-              alt="Monogram ZS"
-              class="w-5 h-5 rounded-full object-cover"
+  <!-- Konten Utama Halaman -->
+  <main id="top" class="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+    <!-- 2. Hero Card -->
+    <section
+      aria-labelledby="heroTitle"
+      class="rounded-3xl bg-gradient-to-br from-brand-700 via-brand-700 to-brand-900 text-white p-6 sm:p-8 shadow-lg shadow-brand-900/15 space-y-5"
+    >
+      <div class="inline-flex items-center gap-2.5 rounded-full bg-white text-brand-950 pl-1.5 pr-3.5 py-1.5 shadow-sm max-w-full">
+        <span data-zs-logo class="w-7 h-7"></span>
+        <span class="text-[11px] sm:text-xs font-extrabold tracking-wide uppercase truncate">
+          ZEPHYR STORE • BOT STORE WHATSAPP 24/7
+        </span>
+      </div>
+
+      <div class="space-y-3">
+        <h1 id="heroTitle" class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+          Sewa Bot Store WhatsApp Cepat, Stabil &amp; Full Garansi
+        </h1>
+        <p class="text-sm sm:text-base text-blue-100 leading-relaxed max-w-2xl">
+          Kelola katalog jualan, list produk, proses order, dan transaksi grup WhatsApp lebih praktis dengan Bot Store aktif 24 jam penuh, respon stabil, serta alur pembayaran dan format sewa yang jelas.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 pt-1">
+        <a
+          href="#paket-sewa"
+          class="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-white hover:bg-blue-50 text-brand-950 font-bold text-sm px-5 py-3 shadow-sm transition"
+        >
+          Lihat Pricelist
+        </a>
+        <a
+          href="https://wa.me/6281511956842?text=Halo%20Admin%20Zephyr%20Store%2C%20saya%20ingin%20bertanya%20sewa%20Bot%20Store%20WhatsApp."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-brand-950/60 hover:bg-brand-950/80 text-white border border-blue-300/30 font-bold text-sm px-5 py-3 transition"
+        >
+          Chat Admin (0815-1195-6842)
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. Official Store Card -->
+    <section
+      aria-label="Official Store"
+      class="rounded-2xl bg-white border border-blue-100 p-4 sm:p-5 shadow-sm flex items-center gap-4"
+    >
+      <span data-zs-logo class="w-14 h-14 sm:w-16 sm:h-16"></span>
+      <div class="min-w-0 space-y-0.5">
+        <div class="text-[11px] font-extrabold tracking-wider uppercase text-brand-700">
+          OFFICIAL STORE
+        </div>
+        <div class="text-base sm:text-lg font-extrabold text-brand-950 truncate">
+          Zephyr Store
+        </div>
+        <div class="text-xs sm:text-sm font-medium text-slate-600 truncate">
+          Admin WA: 0815-1195-6842
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Package Section (#paket-sewa) — Tanpa tabel ringkasan harga paket -->
+    <section id="paket-sewa" aria-labelledby="paketHeading" class="space-y-4 scroll-mt-20">
+      <div class="flex flex-wrap items-end justify-between gap-2">
+        <div>
+          <span class="inline-block rounded-full bg-brand-100 text-brand-800 text-[11px] font-extrabold tracking-wider uppercase px-3 py-1 mb-1.5">
+            PILIHAN PAKET SEWA
+          </span>
+          <h2 id="paketHeading" class="text-xl sm:text-2xl font-extrabold text-brand-950">
+            Paket Sewa Bot Store WhatsApp
+          </h2>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-500">
+          Pilih paket untuk membuka metode pembayaran
+        </p>
+      </div>
+
+      <div id="packageCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- 5. Features Section -->
+    <section
+      aria-labelledby="featuresTitle"
+      class="rounded-2xl bg-white border border-blue-100 p-5 sm:p-6 shadow-sm space-y-4"
+    >
+      <div>
+        <span class="inline-block rounded-full bg-brand-100 text-brand-800 text-[11px] font-extrabold tracking-wider uppercase px-3 py-1 mb-1.5">
+          KEUNGGULAN LAYANAN
+        </span>
+        <h2 id="featuresTitle" class="text-lg sm:text-xl font-extrabold text-brand-950">
+          Keunggulan Bot Store WhatsApp 24/7
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1">
+          Membantu operasional toko di grup WhatsApp agar lebih cepat, rapi, dan konsisten sepanjang hari.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
+        <div class="rounded-xl bg-brand-50/80 border border-blue-100 p-3.5">
+          <div class="font-bold text-brand-950">Aktif 24 Jam Penuh</div>
+          <div class="text-slate-600 mt-0.5">Siap merespon perintah dan kebutuhan pembeli kapan saja.</div>
+        </div>
+        <div class="rounded-xl bg-brand-50/80 border border-blue-100 p-3.5">
+          <div class="font-bold text-brand-950">Respon Cepat &amp; Stabil</div>
+          <div class="text-slate-600 mt-0.5">Menjaga alur transaksi grup tetap lancar dan responsif.</div>
+        </div>
+        <div class="rounded-xl bg-brand-50/80 border border-blue-100 p-3.5">
+          <div class="font-bold text-brand-950">Katalog &amp; Transaksi Rapi</div>
+          <div class="text-slate-600 mt-0.5">Mempermudah list jualan, informasi produk, dan rekap order.</div>
+        </div>
+        <div class="rounded-xl bg-brand-50/80 border border-blue-100 p-3.5">
+          <div class="font-bold text-brand-950">Full Garansi Sesuai Ketentuan</div>
+          <div class="text-slate-600 mt-0.5">Didukung bantuan admin resmi selama masa aktif sewa.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Main Page #format-sewa-bot Section (Terpisah dari pemilihan metode pembayaran) -->
+    <section
+      id="format-sewa-bot"
+      aria-labelledby="formatSectionTitle"
+      class="rounded-3xl bg-white border border-blue-200 p-5 sm:p-7 shadow-sm space-y-5 scroll-mt-20"
+    >
+      <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 pb-4">
+        <div>
+          <span class="inline-block rounded-full bg-brand-100 text-brand-800 text-[11px] font-extrabold tracking-wider uppercase px-3 py-1 mb-2">
+            FORMAT SEWA BOT
+          </span>
+          <h2 id="formatSectionTitle" class="text-xl sm:text-2xl font-extrabold text-brand-950">
+            Format Sewa Bot WhatsApp
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">
+            Pemilihan metode pembayaran berada pada modal <strong>Pilih Paket</strong>. Setelah pembayaran sukses, pembeli diarahkan ke format sewa bot berikut.
+          </p>
+        </div>
+        <button
+          type="button"
+          onclick="openCheckoutModal(state.selectedPackageId)"
+          class="shrink-0 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs sm:text-sm font-bold px-4 py-2.5 shadow-sm transition"
+        >
+          Pilih Paket &amp; Bayar
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Form data Format Sewa Bot -->
+        <div class="space-y-3">
+          <div>
+            <label for="mainNamaPenyewa" class="block text-xs font-bold text-slate-700 mb-1">
+              Nama penyewa :
+            </label>
+            <input
+              id="mainNamaPenyewa"
+              type="text"
+              placeholder="Contoh: Raka"
+              oninput="updateField('namaPenyewa', this.value)"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
             />
-            <span>ZEPHYR STORE • BOT STORE WHATSAPP 24/7</span>
           </div>
 
-          <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-            Sewa Bot Store WhatsApp Cepat, Stabil &amp; Full Garansi
-          </h1>
+          <div>
+            <label for="mainNamaGrup" class="block text-xs font-bold text-slate-700 mb-1">
+              Nama grup penyewa :
+            </label>
+            <input
+              id="mainNamaGrup"
+              type="text"
+              placeholder="Contoh: Zephyr Store Group"
+              oninput="updateField('namaGrupPenyewa', this.value)"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
+            />
+          </div>
 
-          <p class="text-brand-100 text-sm sm:text-base max-w-2xl leading-relaxed">
-            Kelola jualan dan transaksi grup WhatsApp lebih praktis dengan Bot Store aktif 24 jam, fitur lengkap, proses cepat, dan panduan format sewa yang jelas setelah pembayaran.
-          </p>
+          <div>
+            <label for="mainNomorPenyewa" class="block text-xs font-bold text-slate-700 mb-1">
+              Nomor penyewa :
+            </label>
+            <input
+              id="mainNomorPenyewa"
+              type="text"
+              placeholder="Contoh: 081234567890"
+              oninput="updateField('nomorPenyewa', this.value)"
+              class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
+            />
+          </div>
 
-          <div class="flex flex-wrap gap-3 pt-1">
-            <a
-              href="#pricelist"
-              class="px-5 py-3 rounded-xl bg-white text-brand-900 hover:bg-brand-50 font-bold text-sm shadow transition"
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="mainTanggalMulai" class="block text-xs font-bold text-slate-700 mb-1">
+                Tanggal sewa mulai :
+              </label>
+              <input
+                id="mainTanggalMulai"
+                type="date"
+                onchange="handleStartDateInput(this.value)"
+                class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-brand-600 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between gap-1 mb-1">
+                <label for="mainTanggalHabis" class="block text-xs font-bold text-slate-700">
+                  Tanggal sewa habis :
+                </label>
+                <button
+                  type="button"
+                  onclick="applyAutoEndDate()"
+                  class="text-[11px] font-bold text-brand-700 hover:underline"
+                >
+                  Auto
+                </button>
+              </div>
+              <input
+                id="mainTanggalHabis"
+                type="text"
+                onchange="handleEndDateInput(this.value)"
+                placeholder="YYYY-MM-DD atau Permanen"
+                class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-brand-600 focus:outline-none"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Single WhatsApp Bubble & Aksi Cepat -->
+        <div class="flex flex-col justify-between rounded-2xl bg-brand-50/80 border border-brand-100 p-4 space-y-4">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-brand-900">
+                Format Sewa Bot (1 Bubble)
+              </span>
+              <span id="mainPackageBadge" class="text-xs font-bold text-brand-700">
+                Sewa 1 Bulan • Rp 12.500
+              </span>
+            </div>
+            <div
+              id="mainBubbleOutput"
+              class="rounded-2xl rounded-tl-sm bg-white border border-blue-100 p-3.5 text-xs sm:text-sm text-slate-800 whitespace-pre-line leading-relaxed shadow-sm"
+            ></div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-2.5">
+            <button
+              type="button"
+              onclick="copyFormatMessage()"
+              class="flex-1 rounded-xl bg-white hover:bg-brand-50 text-brand-900 border border-brand-200 font-bold text-xs sm:text-sm py-2.5 px-3 transition"
             >
-              Lihat Pricelist
-            </a>
+              Salin Format
+            </button>
             <a
+              id="mainWaSendLink"
               href="https://wa.me/6281511956842"
               target="_blank"
               rel="noopener noreferrer"
-              class="px-5 py-3 rounded-xl bg-brand-700/80 hover:bg-brand-700 border border-white/25 text-white font-semibold text-sm transition"
+              class="flex-1 inline-flex items-center justify-center rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs sm:text-sm py-2.5 px-3 shadow-sm transition"
             >
-              Chat Admin (0815-1195-6842)
+              Kirim ke WhatsApp Admin
             </a>
           </div>
         </div>
+      </div>
+    </section>
+  </main>
 
-        <div class="lg:col-span-4">
-          <div class="bg-white text-slate-800 rounded-2xl p-6 shadow-xl border border-brand-100">
-            <div class="flex items-center gap-4 pb-4 border-b border-slate-100">
-              <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-600 bg-brand-50 shrink-0">
-                <img
-                  data-brand-logo
-                  src="https://ibb.co.com/gF7KP2FY"
-                  alt="Logo Zephyr Store"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-brand-600">Official Store</p>
-                <h2 class="text-xl font-extrabold text-brand-900">Zephyr Store</h2>
-                <p class="text-xs text-slate-500">Admin WA: 0815-1195-6842</p>
+  <!-- Footer -->
+  <footer class="max-w-4xl mx-auto px-4 sm:px-6 pt-2 pb-8 text-center text-xs text-slate-500">
+    Zephyr Store • Sewa Bot Store WhatsApp • Admin WA: 0815-1195-6842
+  </footer>
+
+  <!-- 7. Checkout Modal (Dibuka saat klik "Pilih Paket") -->
+  <div
+    id="checkoutModalBackdrop"
+    onclick="handleModalBackdropClick(event)"
+    class="fixed inset-0 z-40 hidden items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-[2px] p-0 sm:p-4"
+  >
+    <div
+      id="checkoutModalCard"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      class="modal-panel-anim w-full sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white shadow-2xl border border-blue-100"
+    >
+      <!-- Header Modal dengan Logo Lingkaran ZS -->
+      <div class="sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-slate-100 px-5 py-4 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <span data-zs-logo class="w-10 h-10"></span>
+          <div class="min-w-0">
+            <h3 id="modalTitle" class="text-base font-extrabold text-brand-950 truncate">
+              Checkout Paket Sewa
+            </h3>
+            <p id="modalStepSubtitle" class="text-xs text-slate-500 truncate">
+              Zephyr Store • Metode Pembayaran
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onclick="closeCheckoutModal()"
+          aria-label="Tutup modal"
+          class="rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs px-3 py-2 transition"
+        >
+          Tutup
+        </button>
+      </div>
+
+      <!-- Isi Modal -->
+      <div class="p-5 space-y-5">
+        <!-- Info Paket Terpilih & Total Bayar -->
+        <div class="rounded-2xl bg-brand-50 border border-brand-100 p-4 space-y-3">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Paket Terpilih</div>
+              <div id="modalPackageName" class="text-base font-extrabold text-brand-950 mt-0.5">Sewa 1 Bulan</div>
+              <div id="modalPackageDuration" class="text-xs text-slate-600 mt-0.5">Durasi: 30 Hari • Best Seller</div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-brand-700">Total Bayar</div>
+              <div id="modalTotalBayar" class="text-lg font-extrabold text-brand-800 mt-0.5">Rp 12.500</div>
+            </div>
+          </div>
+
+          <div>
+            <label for="modalPackageSelect" class="block text-[11px] font-bold uppercase tracking-wide text-slate-600 mb-1">
+              Ganti Paket
+            </label>
+            <select
+              id="modalPackageSelect"
+              onchange="handlePackageSelection(this.value)"
+              class="w-full rounded-xl border border-brand-200 bg-white px-3 py-2 text-sm font-semibold text-slate-900 focus:border-brand-600 focus:outline-none"
+            ></select>
+          </div>
+        </div>
+
+        <!-- Tahap 1: Metode Pembayaran -->
+        <div id="modalPaymentStep" class="space-y-3.5">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-700">
+            Metode Pembayaran
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button
+              type="button"
+              id="btnSelectQris"
+              onclick="choosePaymentMethod('qris')"
+              class="text-left rounded-2xl border-2 p-3 transition"
+            >
+              <div class="text-xs font-extrabold text-brand-950">QRIS / Bayar Langsung</div>
+              <div class="text-[11px] text-slate-600 mt-0.5">Konfirmasi dulu sebelum QR tampil</div>
+            </button>
+
+            <button
+              type="button"
+              id="btnSelectGopay"
+              onclick="choosePaymentMethod('gopay')"
+              class="text-left rounded-2xl border-2 p-3 transition"
+            >
+              <div class="text-xs font-extrabold text-brand-950">GoPay (081511956842)</div>
+              <div class="text-[11px] text-slate-600 mt-0.5">Transfer ke nomor GoPay admin</div>
+            </button>
+          </div>
+
+          <!-- Area detail pembayaran dinamis -->
+          <div id="modalPaymentPanel" class="rounded-2xl bg-slate-50 border border-slate-200 p-4 space-y-3"></div>
+
+          <button
+            type="button"
+            onclick="markPaymentSucceeded()"
+            class="w-full rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm py-3 px-4 shadow-sm transition"
+          >
+            Konfirmasi Pembayaran Sukses
+          </button>
+        </div>
+
+        <!-- Tahap 2: Format Sewa Bot (Setelah pembayaran sukses) -->
+        <div id="modalFormatStep" class="hidden space-y-4">
+          <div class="flex items-center justify-between gap-2 rounded-2xl bg-emerald-50 border border-emerald-200 px-3.5 py-2.5">
+            <div>
+              <div class="text-xs font-extrabold text-emerald-900">Pembayaran Sukses • Lanjut Format Sewa Bot</div>
+              <div id="modalConfirmedPaymentText" class="text-[11px] text-emerald-700">
+                Metode: QRIS / Bayar Langsung
               </div>
             </div>
-            <ul class="mt-4 space-y-2.5 text-sm text-slate-700">
-              <li class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-brand-600"></span>
-                <span>Mulai dari <strong>Rp 2.500</strong> (1 Hari)</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-brand-600"></span>
-                <span>Bayar via <strong>QRIS All Pay</strong> &amp; <strong>GoPay</strong></span>
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-brand-600"></span>
-                <span><strong>Full Garansi</strong> (wajib masuk grup info bot)</span>
-              </li>
-            </ul>
+            <button
+              type="button"
+              onclick="returnToPaymentStep()"
+              class="text-xs font-bold text-brand-700 hover:underline shrink-0"
+            >
+              Ubah Metode
+            </button>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label for="modalNamaPenyewa" class="block text-xs font-bold text-slate-700 mb-1">
+                Nama penyewa :
+              </label>
+              <input
+                id="modalNamaPenyewa"
+                type="text"
+                placeholder="Masukkan nama penyewa"
+                oninput="updateField('namaPenyewa', this.value)"
+                class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label for="modalNamaGrup" class="block text-xs font-bold text-slate-700 mb-1">
+                Nama grup penyewa :
+              </label>
+              <input
+                id="modalNamaGrup"
+                type="text"
+                placeholder="Masukkan nama grup penyewa"
+                oninput="updateField('namaGrupPenyewa', this.value)"
+                class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label for="modalNomorPenyewa" class="block text-xs font-bold text-slate-700 mb-1">
+                Nomor penyewa :
+              </label>
+              <input
+                id="modalNomorPenyewa"
+                type="text"
+                placeholder="Contoh: 081234567890"
+                oninput="updateField('nomorPenyewa', this.value)"
+                class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-none"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="modalTanggalMulai" class="block text-xs font-bold text-slate-700 mb-1">
+                  Tanggal sewa mulai :
+                </label>
+                <input
+                  id="modalTanggalMulai"
+                  type="date"
+                  onchange="handleStartDateInput(this.value)"
+                  class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-brand-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between gap-1 mb-1">
+                  <label for="modalTanggalHabis" class="block text-xs font-bold text-slate-700">
+                    Tanggal sewa habis :
+                  </label>
+                  <button
+                    type="button"
+                    onclick="applyAutoEndDate()"
+                    class="text-[11px] font-bold text-brand-700 hover:underline"
+                  >
+                    Auto
+                  </button>
+                </div>
+                <input
+                  id="modalTanggalHabis"
+                  type="text"
+                  onchange="handleEndDateInput(this.value)"
+                  placeholder="YYYY-MM-DD atau Permanen"
+                  class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-brand-600 focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Single WhatsApp Bubble Output -->
+          <div class="space-y-2">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-slate-700">
+              Format Sewa Bot (1 Bubble)
+            </div>
+            <div
+              id="modalBubbleOutput"
+              class="rounded-2xl bg-brand-50 border border-brand-100 p-3.5 text-xs sm:text-sm text-slate-800 whitespace-pre-line leading-relaxed"
+            ></div>
+          </div>
+
+          <!-- Tombol Salin & Kirim ke WhatsApp Admin -->
+          <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+            <button
+              type="button"
+              onclick="copyFormatMessage()"
+              class="flex-1 rounded-xl bg-white hover:bg-slate-50 text-brand-900 border border-slate-300 font-bold text-sm py-3 px-4 transition"
+            >
+              Salin Format
+            </button>
+            <a
+              id="modalWaSendLink"
+              href="https://wa.me/6281511956842"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 inline-flex items-center justify-center rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm py-3 px-4 shadow-sm transition"
+            >
+              Kirim ke WhatsApp Admin
+            </a>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Pricelist Section -->
-  <section id="pricelist" class="py-14 sm:py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="inline-block px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider mb-2">
-          Daftar Harga Paket
+  <script>
+    const ADMIN_WHATSAPP = '6281511956842';
+    const GOPAY_NUMBER = '081511956842';
+    const QRIS_DURATION_SECONDS = 30 * 60; // 30 menit
+
+    function getTodayIso() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function calculateEndDateIso(startIso, durationDays) {
+      if (durationDays === null) return 'Permanen';
+      const parts = String(startIso || '').split('-').map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return '';
+      const dt = new Date(parts[0], parts[1] - 1, parts[2]);
+      dt.setDate(dt.getDate() + Number(durationDays));
+      const year = dt.getFullYear();
+      const month = String(dt.getMonth() + 1).padStart(2, '0');
+      const day = String(dt.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    const PACKAGES = [
+      {
+        id: '1d',
+        name: 'Sewa 1 Hari',
+        price: 2500,
+        durationDays: 1,
+        durationLabel: 'Durasi: 1 Hari',
+        badge: 'Harian',
+        description: 'Cocok untuk uji coba Bot Store di grup WhatsApp.',
+        buttonLabel: 'Pilih Paket 1 Hari',
+        featured: false,
+      },
+      {
+        id: '7d',
+        name: 'Sewa 7 Hari',
+        price: 6500,
+        durationDays: 7,
+        durationLabel: 'Durasi: 7 Hari',
+        badge: 'Mingguan',
+        description: 'Pas untuk operasional jualan grup selama satu minggu.',
+        buttonLabel: 'Pilih Paket 7 Hari',
+        featured: false,
+      },
+      {
+        id: '30d',
+        name: 'Sewa 1 Bulan',
+        price: 12500,
+        durationDays: 30,
+        durationLabel: 'Durasi: 30 Hari',
+        badge: 'Best Seller',
+        description: 'Pilihan paling hemat untuk aktivitas store rutin.',
+        buttonLabel: 'Pilih Paket 1 Bulan',
+        featured: true,
+      },
+      {
+        id: 'perm',
+        name: 'Sewa Permanen',
+        price: 35000,
+        durationDays: null,
+        durationLabel: 'Durasi: Permanen',
+        badge: 'Sekali Bayar',
+        description: 'Sekali pembayaran untuk akses jangka panjang.',
+        buttonLabel: 'Pilih Paket Permanen',
+        featured: false,
+      },
+    ];
+
+    const initialStartDate = getTodayIso();
+
+    const state = {
+      selectedPackageId: '30d',
+      paymentMethod: 'qris', // 'qris' | 'gopay'
+      qrisConfirmed: false, // ./qris.jpg hanya tampil setelah dikonfirmasi
+      qrisSecondsRemaining: QRIS_DURATION_SECONDS,
+      paymentSucceeded: false, // setelah sukses, masuk ke Format Sewa Bot
+      namaPenyewa: '',
+      namaGrupPenyewa: '',
+      nomorPenyewa: '',
+      tanggalSewaMulai: initialStartDate,
+      tanggalSewaHabis: calculateEndDateIso(initialStartDate, 30),
+      manualEndDate: false,
+    };
+
+    let qrisTimerId = null;
+
+    function formatIdr(amount) {
+      return 'Rp ' + Number(amount || 0).toLocaleString('id-ID');
+    }
+
+    function formatCountdown(totalSec) {
+      const clamped = Math.max(0, Number(totalSec || 0));
+      const mins = String(Math.floor(clamped / 60)).padStart(2, '0');
+      const secs = String(clamped % 60).padStart(2, '0');
+      return `${mins}:${secs}`;
+    }
+
+    function getActivePackage() {
+      return PACKAGES.find((pkg) => pkg.id === state.selectedPackageId) || PACKAGES[2];
+    }
+
+    function syncEndDateWithPackage() {
+      if (state.manualEndDate) return;
+      const pkg = getActivePackage();
+      state.tanggalSewaHabis = calculateEndDateIso(state.tanggalSewaMulai, pkg.durationDays);
+    }
+
+    function showStatusToast(message) {
+      const toast = document.getElementById('statusToast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      clearTimeout(showStatusToast._timer);
+      showStatusToast._timer = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 2400);
+    }
+
+    /* Logo ZS seragam berbentuk lingkaran di header, hero badge, official store, dan modal */
+    function createCircularLogoHtml() {
+      return `
+        <span class="zs-circle-logo w-full h-full">
+          <img
+            src="./logo-zs.jpg"
+            alt="Logo Zephyr Store"
+            onload="this.parentElement.classList.add('has-image');"
+            onerror="this.classList.add('hidden'); this.parentElement.classList.remove('has-image');"
+          />
+          <span class="zs-svg-fallback" aria-hidden="true">
+            <svg viewBox="0 0 100 100" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="zsBlueGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+                  <stop offset="0%" stop-color="#0284c7" />
+                  <stop offset="55%" stop-color="#1d4ed8" />
+                  <stop offset="100%" stop-color="#172554" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="45" fill="#ffffff" stroke="url(#zsBlueGrad)" stroke-width="5" />
+              <text
+                x="50"
+                y="51"
+                text-anchor="middle"
+                fill="url(#zsBlueGrad)"
+                font-family="Georgia, 'Times New Roman', serif"
+                font-style="italic"
+                font-weight="700"
+                font-size="34"
+                letter-spacing="1"
+              >ZS</text>
+              <text
+                x="50"
+                y="68"
+                text-anchor="middle"
+                fill="#1e3a8a"
+                font-family="Inter, sans-serif"
+                font-weight="800"
+                font-size="10.2"
+                letter-spacing="1.1"
+              >ZEPHYR STORE</text>
+            </svg>
+          </span>
         </span>
-        <h2 class="text-2xl sm:text-4xl font-extrabold text-brand-900">
-          Pricelist Sewa Bot Store
-        </h2>
-        <p class="text-slate-600 text-sm sm:text-base mt-2">
-          Pilih durasi sewa sesuai kebutuhan toko atau grup WhatsApp kamu. Klik paket untuk langsung masuk ke pembayaran.
-        </p>
-      </div>
+      `;
+    }
 
-      <div id="pricelist-cards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-        <div class="bg-white rounded-2xl border border-brand-100 p-6 shadow-sm hover:shadow-md hover:border-brand-400 transition flex flex-col justify-between">
-          <div>
-            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-50 text-brand-700 text-xs font-bold">
-              Paket Harian
-            </span>
-            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa 1 Hari</h3>
-            <p class="text-3xl font-black text-brand-700 mt-2">Rp 2.500</p>
-            <p class="text-xs text-slate-500 mt-1">Aktif 24 jam penuh setelah aktifasi</p>
-            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
-              <li>• Akses penuh fitur Bot Store</li>
-              <li>• Online 24 jam</li>
-              <li>• Full garansi sesuai ketentuan</li>
-            </ul>
+    function renderUnifiedLogos() {
+      try {
+        const logoMarkup = createCircularLogoHtml();
+        document.querySelectorAll('[data-zs-logo]').forEach((el) => {
+          el.innerHTML = logoMarkup;
+        });
+      } catch (err) {
+        // Abaikan jika gagal merender logo
+      }
+    }
+
+    function renderPackageCards() {
+      const container = document.getElementById('packageCardsContainer');
+      if (!container) return;
+
+      container.innerHTML = PACKAGES.map((pkg) => {
+        const borderClass = pkg.featured
+          ? 'border-2 border-brand-600 ring-4 ring-brand-100/70'
+          : 'border border-blue-100';
+
+        const badgeClass = pkg.featured
+          ? 'bg-brand-700 text-white'
+          : 'bg-brand-50 text-brand-800';
+
+        const buttonClass = pkg.featured
+          ? 'bg-brand-700 hover:bg-brand-800 text-white shadow-sm'
+          : 'bg-brand-50 hover:bg-brand-100 text-brand-900 border border-brand-200';
+
+        return `
+          <article class="rounded-2xl bg-white ${borderClass} p-5 shadow-sm flex flex-col justify-between space-y-5">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="inline-block rounded-lg ${badgeClass} text-[11px] font-bold px-2.5 py-1">
+                  ${pkg.badge}
+                </span>
+                <span class="text-xs font-semibold text-slate-500">${pkg.durationLabel}</span>
+              </div>
+              <h3 class="text-lg font-extrabold text-brand-950">${pkg.name}</h3>
+              <div class="text-2xl font-extrabold text-brand-700">${formatIdr(pkg.price)}</div>
+              <p class="text-xs sm:text-sm text-slate-600">${pkg.description}</p>
+              <ul class="pt-1 space-y-1.5 text-xs sm:text-sm text-slate-700">
+                <li class="flex items-center gap-2">
+                  <span class="text-brand-700 font-bold">•</span>
+                  <span>Bot Store aktif 24 jam nonstop</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-brand-700 font-bold">•</span>
+                  <span>Respon cepat &amp; stabil di grup</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-brand-700 font-bold">•</span>
+                  <span>Full garansi sesuai ketentuan</span>
+                </li>
+              </ul>
+            </div>
+
+            <button
+              type="button"
+              onclick="openCheckoutModal('${pkg.id}')"
+              class="w-full rounded-xl ${buttonClass} font-bold text-sm py-3 px-4 transition"
+            >
+              ${pkg.buttonLabel}
+            </button>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function populateModalPackageDropdown() {
+      const select = document.getElementById('modalPackageSelect');
+      if (!select) return;
+      select.innerHTML = PACKAGES.map(
+        (pkg) => `<option value="${pkg.id}">${pkg.name} (${pkg.durationLabel.replace('Durasi: ', '')}) — ${formatIdr(pkg.price)}</option>`
+      ).join('');
+    }
+
+    function startQrisCountdown() {
+      clearInterval(qrisTimerId);
+      state.qrisSecondsRemaining = QRIS_DURATION_SECONDS;
+      renderPaymentPanel();
+
+      qrisTimerId = setInterval(() => {
+        if (state.qrisSecondsRemaining > 0) {
+          state.qrisSecondsRemaining -= 1;
+          refreshQrisCountdownDom();
+        } else {
+          clearInterval(qrisTimerId);
+          renderPaymentPanel();
+        }
+      }, 1000);
+    }
+
+    function refreshQrisCountdownDom() {
+      const timerNode = document.getElementById('qrisCountdownDisplay');
+      const warningNode = document.getElementById('qrisExpiryWarning');
+      if (!timerNode) return;
+
+      if (state.qrisSecondsRemaining > 0) {
+        timerNode.textContent = formatCountdown(state.qrisSecondsRemaining);
+        if (warningNode) {
+          warningNode.textContent = 'Batas waktu 30 menit: jika tidak dibayar dalam 30 menit, QRIS akan hangus.';
+        }
+      } else {
+        timerNode.textContent = '00:00 (HANGUS)';
+        if (warningNode) {
+          warningNode.textContent = 'Waktu 30 menit telah habis — QRIS hangus. Klik Setuju Lagi untuk membuka QRIS baru.';
+        }
+      }
+    }
+
+    function renderPaymentPanel() {
+      const panel = document.getElementById('modalPaymentPanel');
+      const btnQris = document.getElementById('btnSelectQris');
+      const btnGopay = document.getElementById('btnSelectGopay');
+      if (!panel) return;
+
+      const isQris = state.paymentMethod === 'qris';
+
+      if (btnQris) {
+        btnQris.className = isQris
+          ? 'text-left rounded-2xl border-2 border-brand-600 bg-brand-50 p-3 transition'
+          : 'text-left rounded-2xl border-2 border-slate-200 bg-white hover:border-brand-200 p-3 transition';
+      }
+
+      if (btnGopay) {
+        btnGopay.className = !isQris
+          ? 'text-left rounded-2xl border-2 border-brand-600 bg-brand-50 p-3 transition'
+          : 'text-left rounded-2xl border-2 border-slate-200 bg-white hover:border-brand-200 p-3 transition';
+      }
+
+      if (isQris) {
+        if (!state.qrisConfirmed) {
+          panel.innerHTML = `
+            <div class="space-y-3">
+              <div class="text-xs font-extrabold text-brand-950">Konfirmasi Persetujuan Pembayaran QRIS</div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Gambar QRIS belum ditampilkan sebelum Anda setuju membayar menggunakan QRIS. Setelah disetujui, QRIS berlaku selama <strong>30 menit</strong> dan akan <strong>hangus</strong> jika tidak dibayar dalam 30 menit.
+              </p>
+              <button
+                type="button"
+                onclick="confirmQrisAgreement()"
+                class="w-full rounded-xl bg-brand-800 hover:bg-brand-900 text-white font-bold text-xs sm:text-sm py-2.5 px-4 transition"
+              >
+                Setuju Bayar dengan QRIS (Tampilkan QRIS 30 Menit)
+              </button>
+            </div>
+          `;
+        } else {
+          const isExpired = state.qrisSecondsRemaining <= 0;
+          panel.innerHTML = `
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2 rounded-xl bg-amber-50 border border-amber-200 px-3 py-2">
+                <span class="text-xs font-bold text-amber-900">Sisa Waktu QRIS</span>
+                <span id="qrisCountdownDisplay" class="text-sm font-extrabold text-amber-950">
+                  ${isExpired ? '00:00 (HANGUS)' : formatCountdown(state.qrisSecondsRemaining)}
+                </span>
+              </div>
+
+              <div class="rounded-xl bg-white border border-slate-200 p-3.5 flex flex-col items-center justify-center">
+                <img
+                  src="./qris.jpg"
+                  alt="Kode QRIS Zephyr Store"
+                  onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');"
+                  class="w-44 h-44 object-contain rounded-lg ${isExpired ? 'opacity-25 grayscale' : ''}"
+                />
+                <div class="hidden flex-col items-center justify-center py-4 text-center">
+                  <svg viewBox="0 0 80 80" class="w-16 h-16 text-brand-900 mb-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="6" y="6" width="22" height="22" rx="3" />
+                    <rect x="11" y="11" width="12" height="12" fill="#ffffff" />
+                    <rect x="14" y="14" width="6" height="6" />
+                    <rect x="52" y="6" width="22" height="22" rx="3" />
+                    <rect x="57" y="11" width="12" height="12" fill="#ffffff" />
+                    <rect x="60" y="14" width="6" height="6" />
+                    <rect x="6" y="52" width="22" height="22" rx="3" />
+                    <rect x="11" y="57" width="12" height="12" fill="#ffffff" />
+                    <rect x="14" y="60" width="6" height="6" />
+                    <rect x="36" y="12" width="8" height="8" />
+                    <rect x="36" y="28" width="8" height="8" />
+                    <rect x="12" y="36" width="8" height="8" />
+                    <rect x="28" y="36" width="16" height="8" />
+                    <rect x="52" y="36" width="8" height="16" />
+                    <rect x="66" y="44" width="8" height="8" />
+                    <rect x="36" y="52" width="10" height="10" />
+                    <rect x="54" y="60" width="20" height="10" />
+                  </svg>
+                  <span class="text-xs font-extrabold text-brand-950">QRIS Zephyr Store</span>
+                  <span class="text-[11px] text-slate-500">Pastikan file ./qris.jpg ada di repository</span>
+                </div>
+                <p id="qrisExpiryWarning" class="text-[11px] font-medium text-amber-900 text-center mt-2">
+                  ${
+                    isExpired
+                      ? 'Waktu 30 menit telah habis — QRIS hangus. Klik Setuju Lagi untuk membuka QRIS baru.'
+                      : 'Batas waktu 30 menit: jika tidak dibayar dalam 30 menit, QRIS akan hangus.'
+                  }
+                </p>
+              </div>
+
+              ${
+                isExpired
+                  ? `<button type="button" onclick="confirmQrisAgreement()" class="w-full rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs py-2 px-3 transition">Setuju Lagi (Mulai Timer 30 Menit)</button>`
+                  : ''
+              }
+            </div>
+          `;
+        }
+      } else {
+        panel.innerHTML = `
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <div class="text-xs font-extrabold text-brand-950">GoPay (${GOPAY_NUMBER})</div>
+              <div class="text-xs text-slate-600 mt-0.5">Transfer sesuai Total Bayar ke nomor ${GOPAY_NUMBER}</div>
+            </div>
+            <button
+              type="button"
+              onclick="copyGopay()"
+              class="shrink-0 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold px-3 py-2 transition"
+            >
+              Salin Nomor
+            </button>
           </div>
-          <button
-            type="button"
-            onclick="selectPackage('1 Hari', 2500)"
-            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-50 hover:bg-brand-700 text-brand-800 hover:text-white font-bold text-sm border border-brand-200 hover:border-brand-700 transition cursor-pointer"
-          >
-            Pilih Paket 1 Hari
-          </button>
-        </div>
+        `;
+      }
+    }
 
-        <div class="bg-white rounded-2xl border border-brand-100 p-6 shadow-sm hover:shadow-md hover:border-brand-400 transition flex flex-col justify-between">
-          <div>
-            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-50 text-brand-700 text-xs font-bold">
-              Paket Mingguan
-            </span>
-            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa 7 Hari</h3>
-            <p class="text-3xl font-black text-brand-700 mt-2">Rp 6.500</p>
-            <p class="text-xs text-slate-500 mt-1">Cocok untuk operasional mingguan</p>
-            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
-              <li>• Akses penuh fitur Bot Store</li>
-              <li>• Online 24 jam</li>
-              <li>• Full garansi sesuai ketentuan</li>
-            </ul>
-          </div>
-          <button
-            type="button"
-            onclick="selectPackage('7 Hari', 6500)"
-            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-50 hover:bg-brand-700 text-brand-800 hover:text-white font-bold text-sm border border-brand-200 hover:border-brand-700 transition cursor-pointer"
-          >
-            Pilih Paket 7 Hari
-          </button>
-        </div>
+    function confirmQrisAgreement() {
+      state.paymentMethod = 'qris';
+      state.qrisConfirmed = true;
+      startQrisCountdown();
+      refreshView();
+    }
 
-        <div class="bg-white rounded-2xl border-2 border-brand-600 p-6 shadow-md hover:shadow-lg transition flex flex-col justify-between relative">
-          <div>
-            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-700 text-white text-xs font-bold">
-              Best Seller • Bulanan
-            </span>
-            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa 1 Bulan</h3>
-            <p class="text-3xl font-black text-brand-700 mt-2">Rp 12.500</p>
-            <p class="text-xs text-slate-500 mt-1">Paling hemat untuk jualan rutin</p>
-            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
-              <li>• Akses penuh fitur Bot Store</li>
-              <li>• Online 24 jam</li>
-              <li>• Full garansi sesuai ketentuan</li>
-            </ul>
-          </div>
-          <button
-            type="button"
-            onclick="selectPackage('1 Bulan', 12500)"
-            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm shadow transition cursor-pointer"
-          >
-            Pilih Paket 1 Bulan
-          </button>
-        </div>
+    function choosePaymentMethod(method) {
+      if (method === 'gopay') {
+        clearInterval(qrisTimerId);
+        state.paymentMethod = 'gopay';
+        state.qrisConfirmed = false;
+      } else {
+        if (state.paymentMethod !== 'qris') {
+          state.qrisConfirmed = false;
+        }
+        state.paymentMethod = 'qris';
+      }
+      refreshView();
+    }
 
-        <div class="bg-white rounded-2xl border border-brand-100 p-6 shadow-sm hover:shadow-md hover:border-brand-400 transition flex flex-col justify-between">
-          <div>
-            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-900 text-white text-xs font-bold">
-              Sekali Bayar
-            </span>
-            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa Permanen</h3>
-            <p class="text-3xl font-black text-brand-700 mt-2">Rp 35.000</p>
-            <p class="text-xs text-slate-500 mt-1">Lebih praktis tanpa perpanjang rutin</p>
-            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
-              <li>• Akses penuh fitur Bot Store</li>
-              <li>• Online 24 jam</li>
-              <li>• Full garansi sesuai ketentuan</li>
-            </ul>
-          </div>
-          <button
-            type="button"
-            onclick="selectPackage('Permanen', 35000)"
-            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-sm transition cursor-pointer"
-          >
-            Pilih Paket Permanen
-          </button>
-        </div>
-      </div>
+    function markPaymentSucceeded() {
+      if (state.paymentMethod === 'qris' && !state.qrisConfirmed) {
+        confirmQrisAgreement();
+        showStatusToast('Setujui pembayaran QRIS terlebih dahulu untuk menampilkan QRIS');
+        return;
+      }
+      if (state.paymentMethod === 'qris' && state.qrisSecondsRemaining <= 0) {
+        showStatusToast('QRIS sudah hangus setelah 30 menit');
+        return;
+      }
+      state.paymentSucceeded = true;
+      refreshView();
+      showStatusToast('Pembayaran sukses — silakan lengkapi Format Sewa Bot');
+    }
 
-      <div class="bg-white rounded-2xl border border-brand-100 shadow-sm overflow-hidden">
-        <div class="px-6 py-4 bg-brand-50 border-b border-brand-100">
-          <h3 class="font-bold text-brand-900 text-base">Tabel Ringkasan Harga Paket</h3>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
-              <tr>
-                <th class="py-3 px-6 font-bold">Durasi Paket</th>
-                <th class="py-3 px-6 font-bold">Harga</th>
-                <th class="py-3 px-6 font-bold">Status</th>
-                <th class="py-3 px-6 font-bold text-right">Aksi</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              <tr>
-                <td class="py-3.5 px-6 font-semibold text-slate-800">1 Hari</td>
-                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 2.500</td>
-                <td class="py-3.5 px-6 text-xs text-slate-600">Coba / Harian</td>
-                <td class="py-3.5 px-6 text-right">
-                  <button type="button" onclick="selectPackage('1 Hari', 2500)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
-                </td>
-              </tr>
-              <tr>
-                <td class="py-3.5 px-6 font-semibold text-slate-800">7 Hari</td>
-                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 6.500</td>
-                <td class="py-3.5 px-6 text-xs text-slate-600">Mingguan</td>
-                <td class="py-3.5 px-6 text-right">
-                  <button type="button" onclick="selectPackage('7 Hari', 6500)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
-                </td>
-              </tr>
-              <tr class="bg-brand-50/40">
-                <td class="py-3.5 px-6 font-semibold text-slate-800">1 Bulan</td>
-                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 12.500</td>
-                <td class="py-3.5 px-6"><span class="px-2 py-0.5 rounded bg-brand-700 text-white text-xs font-bold">Best Seller</span></td>
-                <td class="py-3.5 px-6 text-right">
-                  <button type="button" onclick="selectPackage('1 Bulan', 12500)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
-                </td>
-              </tr>
-              <tr>
-                <td class="py-3.5 px-6 font-semibold text-slate-800">Permanen</td>
-                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 35.000</td>
-                <td class="py-3.5 px-6 text-xs text-slate-600">Sekali Bayar</td>
-                <td class="py-3.5 px-6 text-right">
-                  <button type="button" onclick="selectPackage('Permanen', 35000)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
+    function returnToPaymentStep() {
+      state.paymentSucceeded = false;
+      refreshView();
+    }
 
-  <!-- Fitur Bot Section -->
-  <section id="fitur" class="py-14 bg-white border-y border-brand-100">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="inline-block px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider mb-2">
-          Keunggulan Layanan
-        </span>
-        <h2 class="text-2xl sm:text-4xl font-extrabold text-brand-900">
-          Fitur Bot Store WhatsApp
-        </h2>
-        <p class="text-slate-600 text-sm sm:text-base mt-2">
-          Dirancang untuk membantu proses jualan di grup agar lebih cepat, rapi, dan informatif.
-        </p>
-      </div>
+    function composeFormatSewaBot() {
+      const nama = state.namaPenyewa.trim() || '-';
+      const grup = state.namaGrupPenyewa.trim() || '-';
+      const nomor = state.nomorPenyewa.trim() || '-';
+      const mulai = state.tanggalSewaMulai || '-';
+      const habis = state.tanggalSewaHabis || '-';
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
-          <h3 class="font-bold text-brand-900 text-base">Online 24 Jam</h3>
-          <p class="text-sm text-slate-600 mt-1.5">Bot aktif nonstop untuk melayani perintah dan kebutuhan toko kapan saja.</p>
-        </div>
-        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
-          <h3 class="font-bold text-brand-900 text-base">Pay Geser</h3>
-          <p class="text-sm text-slate-600 mt-1.5">Menampilkan metode pembayaran secara rapi dan praktis saat transaksi berlangsung.</p>
-        </div>
-        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
-          <h3 class="font-bold text-brand-900 text-base">Stalk Game</h3>
-          <p class="text-sm text-slate-600 mt-1.5">Membantu pengecekan data akun game secara cepat sebelum proses order.</p>
-        </div>
-        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
-          <h3 class="font-bold text-brand-900 text-base">Button Click</h3>
-          <p class="text-sm text-slate-600 mt-1.5">Interaksi tombol cepat agar navigasi menu dan perintah lebih mudah digunakan.</p>
-        </div>
-        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
-          <h3 class="font-bold text-brand-900 text-base">Wording Done / Proses</h3>
-          <p class="text-sm text-slate-600 mt-1.5">Template balasan status pesanan yang sedang diproses maupun selesai secara instan.</p>
-        </div>
-        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
-          <h3 class="font-bold text-brand-900 text-base">Wording List</h3>
-          <p class="text-sm text-slate-600 mt-1.5">Menampilkan daftar produk atau layanan dengan format teks yang rapi dan mudah dibaca.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      return [
+        `Nama penyewa : ${nama}`,
+        `Nama grup penyewa : ${grup}`,
+        `Nomor penyewa : ${nomor}`,
+        `Tanggal sewa mulai : ${mulai}`,
+        `Tanggal sewa habis : ${habis}`,
+      ].join('\n');
+    }
 
-  <!-- Garansi Section -->
-  <section id="garansi" class="py-14">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6">
-      <div class="bg-white rounded-2xl border border-brand-200 p-6 sm:p-8 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-          <div>
-            <span class="inline-block px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider">
-              Ketentuan Garansi
-            </span>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-brand-900 mt-2">
-              Full Garansi Sewa Bot Store
-            </h2>
-          </div>
-          <a
-            href="https://chat.whatsapp.com/JvLnQvIS326GE1CEeha1bA?s=cl&p=a&iam=2"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs sm:text-sm font-bold shadow-xs transition shrink-0"
-          >
-            Masuk Grup Info Bot WA
-          </a>
-        </div>
-        <div class="mt-4 space-y-2.5 text-sm sm:text-base text-slate-700">
-          <p>
-            Setiap penyewaan bot mendapatkan <strong>full garansi</strong> selama masa sewa berlangsung.
-          </p>
-          <p>
-            <strong>Syarat wajib:</strong> Penyewa <strong>wajib masuk ke grup info bot WhatsApp admin</strong> untuk mendapatkan pembaruan informasi, pemberitahuan perbaikan, serta klaim garansi.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+    function refreshView() {
+      const pkg = getActivePackage();
+      const formattedTotal = formatIdr(pkg.price);
 
-  <!-- Pembayaran / Checkout Section -->
-  <section id="checkout" class="py-14 bg-white border-t border-brand-100">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6">
-      <div class="text-
+      const fieldBindings = [
+        { mainId: 'mainNamaPenyewa', modalId: 'modalNamaPenyewa', prop: 'namaPenyewa' },
+        { mainId: 'mainNamaGrup', modalId: 'modalNamaGrup', prop: 'namaGrupPenyewa' },
+        { mainId: 'mainNomorPenyewa', modalId: 'modalNomorPenyewa', prop: 'nomorPenyewa' },
+        { mainId: 'mainTanggalMulai', modalId: 'modalTanggalMulai', prop: 'tanggalSewaMulai' },
+        { mainId: 'mainTanggalHabis', modalId: 'modalTanggalHabis', prop: 'tanggalSewaHabis' },
+      ];
+
+      fieldBindings.forEach(({ mainId, modalId, prop }) => {
+        const mainInput = document.getElementById(mainId);
+        const modalInput = document.getElementById(modalId);
+        if (mainInput && mainInput.value !== state[prop]) mainInput.value = state[prop];
+        if (modalInput && modalInput.value !== state[prop]) modalInput.value = state[prop];
+      });
+
+      const mainBadge = document.getElementById('mainPackageBadge');
+      if (mainBadge) mainBadge.textContent = `${pkg.name} • ${formattedTotal}`;
+
+      const dropdown = document.getElementById('modalPackageSelect');
+      const pkgNameEl = document.getElementById('modalPackageName');
+      const pkgDurationEl = document.getElementById('modalPackageDuration');
+      const totalBayarEl = document.getElementById('modalTotalBayar');
+      if (dropdown) dropdown.value = state.selectedPackageId;
+      if (pkgNameEl) pkgNameEl.textContent = pkg.name;
+      if (pkgDurationEl) pkgDurationEl.textContent = `${pkg.durationLabel} • ${pkg.badge}`;
+      if (totalBayarEl) totalBayarEl.textContent = formattedTotal;
+
+      renderPaymentPanel();
+
+      const paymentStepEl = document.getElementById('modalPaymentStep');
+      const formatStepEl = document.getElementById('modalFormatStep');
+      const subtitleEl = document.getElementById('modalStepSubtitle');
+      const confirmedMethodEl = document.getElementById('modalConfirmedPaymentText');
+
+      if (state.paymentSucceeded) {
+        if (paymentStepEl) paymentStepEl.classList.add('hidden');
+        if (formatStepEl) formatStepEl.classList.remove('hidden');
+        if (subtitleEl) subtitleEl.textContent = 'Pembayaran Sukses • Format Sewa Bot';
+        if (confirmedMethodEl) {
+          confirmedMethodEl.textContent =
+            state.paymentMethod === 'gopay'
+              ? `Metode: GoPay (${GOPAY_NUMBER})`
+              : 'Metode: QRIS / Bayar Langsung';
+        }
+      } else {
+        if (paymentStepEl) paymentStepEl.classList.remove('hidden');
+        if (formatStepEl) formatStepEl.classList.add('hidden');
+        if (subtitleEl) subtitleEl.textContent = 'Zephyr Store • Metode Pembayaran';
+      }
+
+      const messageText = composeFormatSewaBot();
+      const mainBubble = document.getElementById('mainBubbleOutput');
+      const modalBubble = document.getElementById('modalBubbleOutput');
+      if (mainBubble) mainBubble.textContent = messageText;
+      if (modalBubble) modalBubble.textContent = messageText;
+
+      const waHref = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(messageText)}`;
+      ['mainWaSendLink', 'modalWaSendLink'].forEach((id) => {
+        const linkEl = document.getElementById(id);
+        if (linkEl) linkEl.href = waHref;
+      });
+    }
+
+    function handlePackageSelection(packageId) {
+      state.selectedPackageId = packageId;
+      state.manualEndDate = false;
+      syncEndDateWithPackage();
+      refreshView();
+    }
+
+    function updateField(prop, val) {
+      state[prop] = val;
+      refreshView();
+    }
+
+    function handleStartDateInput(val) {
+      if (!val) return;
+      state.tanggalSewaMulai = val;
+      state.manualEndDate = false;
+      syncEndDateWithPackage();
+      refreshView();
+    }
+
+    function handleEndDateInput(val) {
+      state.tanggalSewaHabis = val;
+      state.manualEndDate = true;
+      refreshView();
+    }
+
+    function applyAutoEndDate() {
+      state.manualEndDate = false;
+      syncEndDateWithPackage();
+      refreshView();
+      showStatusToast('Tanggal sewa habis dihitung otomatis');
+    }
+
+    function openCheckoutModal(packageId) {
+      state.selectedPackageId = packageId;
+      state.paymentSucceeded = false;
+      state.manualEndDate = false;
+      syncEndDateWithPackage();
+      refreshView();
+
+      const backdrop = document.getElementById('checkoutModalBackdrop');
+      if (!backdrop) return;
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
+    }
+
+    function closeCheckoutModal() {
+      const backdrop = document.getElementById('checkoutModalBackdrop');
+      if (!backdrop) return;
+      backdrop.classList.remove('flex');
+      backdrop.classList.add('hidden');
+    }
+
+    function handleModalBackdropClick(event) {
+      if (event.target && event.target.id === 'checkoutModalBackdrop') {
+        closeCheckoutModal();
+      }
+    }
+
+    function writeToClipboard(text) {
+      const helper = document.createElement('textarea');
+      helper.value = text;
+      helper.setAttribute('readonly', '');
+      helper.style.position = 'fixed';
+      helper.style.left = '-9999px';
+      document.body.appendChild(helper);
+      helper.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        // Lewati jika disalin manual oleh pengguna
+      }
+      document.body.removeChild(helper);
+    }
+
+    function copyGopay() {
+      writeToClipboard(GOPAY_NUMBER);
+      showStatusToast('Nomor GoPay 081511956842 disalin');
+    }
+
+    function copyFormatMessage() {
+      writeToClipboard(composeFormatSewaBot());
+      showStatusToast('Format sewa bot disalin');
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeCheckoutModal();
+      }
+    });
+
+    // Inisialisasi halaman
+    renderUnifiedLogos();
+    renderPackageCards();
+    populateModalPackageDropdown();
+    refreshView();
+  </script>
+</body>
+</html>
+```
