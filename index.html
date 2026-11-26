@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zephyr Store — Sewa Bot Store WhatsApp</title>
+  <link id="dynamic-favicon" rel="icon" type="image/png" href="https://ibb.co.com/gF7KP2FY" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              200: '#b9ddfe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#1d4ed8',
+              800: '#1e3a8a',
+              900: '#172554',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-brand-50/50 text-slate-800 antialiased selection:bg-brand-600 selection:text-white">
+
+  <!-- Fallback SVG Logo ZS (Biru & Putih) -->
+  <svg id="zs-fallback-svg" class="hidden" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="60" cy="60" r="56" fill="#ffffff" stroke="#0369a1" stroke-width="5"/>
+    <path d="M34 36 H68 L36 74 H68" fill="none" stroke="#0284c7" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M84 42 C84 35 66 35 66 45 C66 55 86 53 86 66 C86 77 65 78 62 71" fill="none" stroke="#1e3a8a" stroke-width="7" stroke-linecap="round"/>
+  </svg>
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-brand-100 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-brand-600 bg-white flex items-center justify-center shrink-0 shadow-xs">
+          <img
+            data-brand-logo
+            src="https://ibb.co.com/gF7KP2FY"
+            alt="Logo Zephyr Store ZS"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div>
+          <span class="block font-extrabold text-base sm:text-lg tracking-tight text-brand-900 group-hover:text-brand-700 transition">
+            Zephyr Store
+          </span>
+          <span class="block text-[11px] font-medium text-brand-600 -mt-0.5">
+            Sewa Bot Store WhatsApp
+          </span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
+        <a href="#pricelist" class="hover:text-brand-700 transition">Pricelist</a>
+        <a href="#fitur" class="hover:text-brand-700 transition">Fitur Bot</a>
+        <a href="#garansi" class="hover:text-brand-700 transition">Garansi</a>
+        <a href="#checkout" class="hover:text-brand-700 transition">Pembayaran</a>
+        <a href="#format-sewa" class="hover:text-brand-700 transition">Format Sewa</a>
+      </nav>
+
+      <a
+        href="#checkout"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs sm:text-sm font-bold shadow-sm transition"
+      >
+        Sewa Sekarang
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="top" class="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-brand-600 text-white py-14 sm:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      <div class="grid lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-5">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white text-brand-900 text-xs font-bold shadow">
+            <img
+              data-brand-logo
+              src="https://ibb.co.com/gF7KP2FY"
+              alt="Monogram ZS"
+              class="w-5 h-5 rounded-full object-cover"
+            />
+            <span>ZEPHYR STORE • BOT STORE WHATSAPP 24/7</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+            Sewa Bot Store WhatsApp Cepat, Stabil &amp; Full Garansi
+          </h1>
+
+          <p class="text-brand-100 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Kelola jualan dan transaksi grup WhatsApp lebih praktis dengan Bot Store aktif 24 jam, fitur lengkap, proses cepat, dan panduan format sewa yang jelas setelah pembayaran.
+          </p>
+
+          <div class="flex flex-wrap gap-3 pt-1">
+            <a
+              href="#pricelist"
+              class="px-5 py-3 rounded-xl bg-white text-brand-900 hover:bg-brand-50 font-bold text-sm shadow transition"
+            >
+              Lihat Pricelist
+            </a>
+            <a
+              href="https://wa.me/6281511956842"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-5 py-3 rounded-xl bg-brand-700/80 hover:bg-brand-700 border border-white/25 text-white font-semibold text-sm transition"
+            >
+              Chat Admin (0815-1195-6842)
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4">
+          <div class="bg-white text-slate-800 rounded-2xl p-6 shadow-xl border border-brand-100">
+            <div class="flex items-center gap-4 pb-4 border-b border-slate-100">
+              <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-600 bg-brand-50 shrink-0">
+                <img
+                  data-brand-logo
+                  src="https://ibb.co.com/gF7KP2FY"
+                  alt="Logo Zephyr Store"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-brand-600">Official Store</p>
+                <h2 class="text-xl font-extrabold text-brand-900">Zephyr Store</h2>
+                <p class="text-xs text-slate-500">Admin WA: 0815-1195-6842</p>
+              </div>
+            </div>
+            <ul class="mt-4 space-y-2.5 text-sm text-slate-700">
+              <li class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+                <span>Mulai dari <strong>Rp 2.500</strong> (1 Hari)</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+                <span>Bayar via <strong>QRIS All Pay</strong> &amp; <strong>GoPay</strong></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+                <span><strong>Full Garansi</strong> (wajib masuk grup info bot)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricelist Section -->
+  <section id="pricelist" class="py-14 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="inline-block px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider mb-2">
+          Daftar Harga Paket
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-brand-900">
+          Pricelist Sewa Bot Store
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Pilih durasi sewa sesuai kebutuhan toko atau grup WhatsApp kamu. Klik paket untuk langsung masuk ke pembayaran.
+        </p>
+      </div>
+
+      <div id="pricelist-cards" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+        <div class="bg-white rounded-2xl border border-brand-100 p-6 shadow-sm hover:shadow-md hover:border-brand-400 transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-50 text-brand-700 text-xs font-bold">
+              Paket Harian
+            </span>
+            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa 1 Hari</h3>
+            <p class="text-3xl font-black text-brand-700 mt-2">Rp 2.500</p>
+            <p class="text-xs text-slate-500 mt-1">Aktif 24 jam penuh setelah aktifasi</p>
+            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
+              <li>• Akses penuh fitur Bot Store</li>
+              <li>• Online 24 jam</li>
+              <li>• Full garansi sesuai ketentuan</li>
+            </ul>
+          </div>
+          <button
+            type="button"
+            onclick="selectPackage('1 Hari', 2500)"
+            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-50 hover:bg-brand-700 text-brand-800 hover:text-white font-bold text-sm border border-brand-200 hover:border-brand-700 transition cursor-pointer"
+          >
+            Pilih Paket 1 Hari
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-brand-100 p-6 shadow-sm hover:shadow-md hover:border-brand-400 transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-50 text-brand-700 text-xs font-bold">
+              Paket Mingguan
+            </span>
+            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa 7 Hari</h3>
+            <p class="text-3xl font-black text-brand-700 mt-2">Rp 6.500</p>
+            <p class="text-xs text-slate-500 mt-1">Cocok untuk operasional mingguan</p>
+            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
+              <li>• Akses penuh fitur Bot Store</li>
+              <li>• Online 24 jam</li>
+              <li>• Full garansi sesuai ketentuan</li>
+            </ul>
+          </div>
+          <button
+            type="button"
+            onclick="selectPackage('7 Hari', 6500)"
+            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-50 hover:bg-brand-700 text-brand-800 hover:text-white font-bold text-sm border border-brand-200 hover:border-brand-700 transition cursor-pointer"
+          >
+            Pilih Paket 7 Hari
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border-2 border-brand-600 p-6 shadow-md hover:shadow-lg transition flex flex-col justify-between relative">
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-700 text-white text-xs font-bold">
+              Best Seller • Bulanan
+            </span>
+            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa 1 Bulan</h3>
+            <p class="text-3xl font-black text-brand-700 mt-2">Rp 12.500</p>
+            <p class="text-xs text-slate-500 mt-1">Paling hemat untuk jualan rutin</p>
+            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
+              <li>• Akses penuh fitur Bot Store</li>
+              <li>• Online 24 jam</li>
+              <li>• Full garansi sesuai ketentuan</li>
+            </ul>
+          </div>
+          <button
+            type="button"
+            onclick="selectPackage('1 Bulan', 12500)"
+            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm shadow transition cursor-pointer"
+          >
+            Pilih Paket 1 Bulan
+          </button>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-brand-100 p-6 shadow-sm hover:shadow-md hover:border-brand-400 transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-brand-900 text-white text-xs font-bold">
+              Sekali Bayar
+            </span>
+            <h3 class="text-lg font-bold text-brand-900 mt-3">Sewa Permanen</h3>
+            <p class="text-3xl font-black text-brand-700 mt-2">Rp 35.000</p>
+            <p class="text-xs text-slate-500 mt-1">Lebih praktis tanpa perpanjang rutin</p>
+            <ul class="mt-4 space-y-2 text-xs sm:text-sm text-slate-600 border-t border-slate-100 pt-4">
+              <li>• Akses penuh fitur Bot Store</li>
+              <li>• Online 24 jam</li>
+              <li>• Full garansi sesuai ketentuan</li>
+            </ul>
+          </div>
+          <button
+            type="button"
+            onclick="selectPackage('Permanen', 35000)"
+            class="mt-6 w-full py-2.5 px-4 rounded-xl bg-brand-900 hover:bg-brand-800 text-white font-bold text-sm transition cursor-pointer"
+          >
+            Pilih Paket Permanen
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-brand-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 bg-brand-50 border-b border-brand-100">
+          <h3 class="font-bold text-brand-900 text-base">Tabel Ringkasan Harga Paket</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-6 font-bold">Durasi Paket</th>
+                <th class="py-3 px-6 font-bold">Harga</th>
+                <th class="py-3 px-6 font-bold">Status</th>
+                <th class="py-3 px-6 font-bold text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr>
+                <td class="py-3.5 px-6 font-semibold text-slate-800">1 Hari</td>
+                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 2.500</td>
+                <td class="py-3.5 px-6 text-xs text-slate-600">Coba / Harian</td>
+                <td class="py-3.5 px-6 text-right">
+                  <button type="button" onclick="selectPackage('1 Hari', 2500)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-3.5 px-6 font-semibold text-slate-800">7 Hari</td>
+                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 6.500</td>
+                <td class="py-3.5 px-6 text-xs text-slate-600">Mingguan</td>
+                <td class="py-3.5 px-6 text-right">
+                  <button type="button" onclick="selectPackage('7 Hari', 6500)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
+                </td>
+              </tr>
+              <tr class="bg-brand-50/40">
+                <td class="py-3.5 px-6 font-semibold text-slate-800">1 Bulan</td>
+                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 12.500</td>
+                <td class="py-3.5 px-6"><span class="px-2 py-0.5 rounded bg-brand-700 text-white text-xs font-bold">Best Seller</span></td>
+                <td class="py-3.5 px-6 text-right">
+                  <button type="button" onclick="selectPackage('1 Bulan', 12500)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="py-3.5 px-6 font-semibold text-slate-800">Permanen</td>
+                <td class="py-3.5 px-6 font-bold text-brand-700">Rp 35.000</td>
+                <td class="py-3.5 px-6 text-xs text-slate-600">Sekali Bayar</td>
+                <td class="py-3.5 px-6 text-right">
+                  <button type="button" onclick="selectPackage('Permanen', 35000)" class="text-brand-700 hover:underline font-semibold cursor-pointer">Pilih</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fitur Bot Section -->
+  <section id="fitur" class="py-14 bg-white border-y border-brand-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="inline-block px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider mb-2">
+          Keunggulan Layanan
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-brand-900">
+          Fitur Bot Store WhatsApp
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Dirancang untuk membantu proses jualan di grup agar lebih cepat, rapi, dan informatif.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
+          <h3 class="font-bold text-brand-900 text-base">Online 24 Jam</h3>
+          <p class="text-sm text-slate-600 mt-1.5">Bot aktif nonstop untuk melayani perintah dan kebutuhan toko kapan saja.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
+          <h3 class="font-bold text-brand-900 text-base">Pay Geser</h3>
+          <p class="text-sm text-slate-600 mt-1.5">Menampilkan metode pembayaran secara rapi dan praktis saat transaksi berlangsung.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
+          <h3 class="font-bold text-brand-900 text-base">Stalk Game</h3>
+          <p class="text-sm text-slate-600 mt-1.5">Membantu pengecekan data akun game secara cepat sebelum proses order.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
+          <h3 class="font-bold text-brand-900 text-base">Button Click</h3>
+          <p class="text-sm text-slate-600 mt-1.5">Interaksi tombol cepat agar navigasi menu dan perintah lebih mudah digunakan.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
+          <h3 class="font-bold text-brand-900 text-base">Wording Done / Proses</h3>
+          <p class="text-sm text-slate-600 mt-1.5">Template balasan status pesanan yang sedang diproses maupun selesai secara instan.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-brand-50/70 border border-brand-100">
+          <h3 class="font-bold text-brand-900 text-base">Wording List</h3>
+          <p class="text-sm text-slate-600 mt-1.5">Menampilkan daftar produk atau layanan dengan format teks yang rapi dan mudah dibaca.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Garansi Section -->
+  <section id="garansi" class="py-14">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="bg-white rounded-2xl border border-brand-200 p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-bold uppercase tracking-wider">
+              Ketentuan Garansi
+            </span>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-brand-900 mt-2">
+              Full Garansi Sewa Bot Store
+            </h2>
+          </div>
+          <a
+            href="https://chat.whatsapp.com/JvLnQvIS326GE1CEeha1bA?s=cl&p=a&iam=2"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs sm:text-sm font-bold shadow-xs transition shrink-0"
+          >
+            Masuk Grup Info Bot WA
+          </a>
+        </div>
+        <div class="mt-4 space-y-2.5 text-sm sm:text-base text-slate-700">
+          <p>
+            Setiap penyewaan bot mendapatkan <strong>full garansi</strong> selama masa sewa berlangsung.
+          </p>
+          <p>
+            <strong>Syarat wajib:</strong> Penyewa <strong>wajib masuk ke grup info bot WhatsApp admin</strong> untuk mendapatkan pembaruan informasi, pemberitahuan perbaikan, serta klaim garansi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pembayaran / Checkout Section -->
+  <section id="checkout" class="py-14 bg-white border-t border-brand-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-
